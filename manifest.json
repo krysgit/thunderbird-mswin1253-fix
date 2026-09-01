@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "MSWIN1253 Greek Fix",
+  "version": "0.3.0",
+  "description": "Fixes Greek HTML messages that incorrectly declare charset=MSWIN1253 by decoding those MIME parts as windows-1253 for display only.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "mswin1253-greek-fix@local.invalid",
+      "strict_min_version": "128.0"
+    }
+  },
+  "permissions": [
+    "messagesRead",
+    "messagesModify"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
