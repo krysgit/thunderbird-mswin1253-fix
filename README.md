@@ -1,10 +1,72 @@
 # MSWIN1253 Greek Fix for Thunderbird
 
-A small Thunderbird extension that fixes Greek text in emails that incorrectly declare the MIME character set as `MSWIN1253` instead of the standard `windows-1253` label.
+Μικρή επέκταση για το Thunderbird που διορθώνει την εμφάνιση ελληνικών χαρακτήρων σε emails τα οποία δηλώνουν:
 
-## The problem
+`charset=MSWIN1253`
 
-Some legacy mail systems send Greek HTML mail using Windows-1253 bytes but use a header such as:
+αντί για:
+
+`charset=windows-1253`
+
+## Το πρόβλημα
+
+Ορισμένα παλαιότερα συστήματα αποστολής email χρησιμοποιούν την κωδικοποίηση Windows-1253 για ελληνικό κείμενο, αλλά δηλώνουν στο MIME header:
+
+`charset=MSWIN1253`
+
+Το συγκεκριμένο charset label ενδέχεται να μην αναγνωρίζεται σωστά από σύγχρονες εκδόσεις του Thunderbird, με αποτέλεσμα οι ελληνικοί χαρακτήρες να εμφανίζονται ως σύμβολα αντικατάστασης, για παράδειγμα:
+
+`���`
+
+## Χρήση για emails του ΕΚΔΔΑ
+
+Η επέκταση είναι ιδιαίτερα χρήσιμη για δημόσιους υπαλλήλους που λαμβάνουν ενημερωτικά emails από το **ΕΚΔΔΑ (Εθνικό Κέντρο Δημόσιας Διοίκησης και Αυτοδιοίκησης)** σχετικά με επιμορφωτικά προγράμματα και σεμινάρια στα οποία έχουν εγγραφεί ή επιλεγεί να συμμετάσχουν.
+
+Έχει παρατηρηθεί ότι ορισμένα από αυτά τα emails αποστέλλονται με:
+
+`charset=MSWIN1253`
+
+με αποτέλεσμα τα ελληνικά να μην εμφανίζονται σωστά στο Thunderbird.
+
+Η επέκταση διορθώνει την εμφάνιση αυτών των μηνυμάτων χωρίς να τροποποιεί το πρωτότυπο email που είναι αποθηκευμένο στον mail server.
+
+## Τι κάνει η επέκταση
+
+Όταν εμφανίζεται ένα email που περιέχει:
+
+`charset=MSWIN1253`
+
+η επέκταση:
+
+1. Διαβάζει το raw MIME περιεχόμενο του μηνύματος.
+2. Εντοπίζει το επηρεαζόμενο HTML τμήμα.
+3. Αποκωδικοποιεί το περιεχόμενο ως Windows-1253.
+4. Εμφανίζει σωστά το ελληνικό κείμενο στο Thunderbird.
+
+Τα υπόλοιπα emails δεν επηρεάζονται.
+
+Το αρχικό μήνυμα στον mail server δεν τροποποιείται.
+
+## Εγκατάσταση
+
+1. Μεταβείτε στη σελίδα **Releases** του repository.
+2. Κατεβάστε το πιο πρόσφατο αρχείο `.xpi`.
+3. Ανοίξτε το Thunderbird.
+4. Μεταβείτε στο **Add-ons and Themes**.
+5. Πατήστε το γρανάζι ⚙️.
+6. Επιλέξτε **Install Add-on From File...**
+7. Επιλέξτε το αρχείο `.xpi` που κατεβάσατε.
+
+## Περιβάλλον δοκιμής
+
+Η επέκταση έχει ελεγχθεί και επιβεβαιωθεί ότι λειτουργεί σε:
+
+- Linux
+- Thunderbird 140.8.0esr (64-bit)
+
+Ενδέχεται να λειτουργεί και σε άλλες εκδόσεις του Thunderbird ή άλλα λειτουργικά συστήματα, αλλά αυτά δεν έχουν ακόμη ελεγχθεί.
+
+## Παράδειγμα προβληματικού MIME header
 
 ```text
 Content-Type: text/html;
@@ -12,82 +74,37 @@ Content-Type: text/html;
 Content-Transfer-Encoding: base64
 ```
 
-Thunderbird may fail to interpret that non-standard charset label correctly, so Greek text is displayed as replacement characters such as `���`.
+## Συμβατότητα
 
-Changing the label to `windows-1253` makes the same message render correctly.
+Το `manifest.json` απαιτεί **Thunderbird 128 ή νεότερο**.
 
-## What the extension does
+Η επέκταση χρησιμοποιεί τα Thunderbird APIs:
 
-When a displayed message contains `charset=MSWIN1253`, the extension:
+- `messages.getRaw`
+- `messageDisplayScripts`
+- `messageDisplay.onMessageDisplayed`
 
-1. Reads the raw MIME message using Thunderbird's extension APIs.
-2. Finds the affected `text/html` MIME part.
-3. Decodes its bytes as `windows-1253`.
-4. Sanitizes the resulting HTML.
-5. Replaces only the displayed document with the correctly decoded content.
+## Υποστηριζόμενα Content-Transfer-Encoding
 
-The original email stored locally or on the mail server is **not modified**.
-
-Messages that do not contain `charset=MSWIN1253` are ignored.
-
-## Tested environment
-
-This extension has been tested and confirmed to work on:
-
-- Linux
-- Thunderbird 140.8.0esr (64-bit)
-
-Other operating systems and Thunderbird versions may also work, but have not been verified yet.
-
-## Download
-
-Go to **Releases** and download the latest `.xpi` asset:
-
-**[Latest release](../../releases/latest)**
-
-The release asset is named like:
-
-```text
-mswin1253-greek-fix-v1.0.0.xpi
-```
-
-## Installation
-
-1. Download the `.xpi` from the Releases page.
-2. Open Thunderbird.
-3. Open **Add-ons and Themes**.
-4. In **Extensions**, open the gear menu (⚙).
-5. Select **Install Add-on From File…**.
-6. Choose the downloaded `.xpi` file.
-7. Reopen an affected email.
-
-## Compatibility
-
-The manifest requires **Thunderbird 128 or newer**.
-
-This project uses Thunderbird's `messages.getRaw`, `messageDisplayScripts`, and `messageDisplay.onMessageDisplayed` APIs.
-
-## Supported message encodings
-
-For an affected `text/html` MIME part declaring `MSWIN1253`, the extension handles:
+Για επηρεαζόμενα `text/html` MIME parts που δηλώνουν `MSWIN1253`, η επέκταση χειρίζεται:
 
 - `base64`
 - `quoted-printable`
-- 7-bit / 8-bit style bodies as a fallback
+- σώματα τύπου 7-bit / 8-bit ως fallback
 
-The original reported case uses `base64`.
+Το αρχικό περιστατικό για το οποίο δημιουργήθηκε η επέκταση χρησιμοποιεί `base64`.
 
-## Security / privacy
+## Ασφάλεια και ιδιωτικότητα
 
-- No message content is sent anywhere.
-- There are no network requests in the extension.
-- The original email is not rewritten.
-- The decoded HTML is sanitized before being inserted into the message display.
-- Scripts, forms, iframes, embedded objects, JavaScript URLs, event-handler attributes, and remote image sources are removed.
+- Κανένα περιεχόμενο email δεν αποστέλλεται σε εξωτερική υπηρεσία.
+- Η επέκταση δεν πραγματοποιεί network requests.
+- Το αρχικό email δεν τροποποιείται.
+- Το αποκωδικοποιημένο HTML καθαρίζεται πριν εισαχθεί στην προβολή του μηνύματος.
+- Αφαιρούνται scripts, forms, iframes, embedded objects, JavaScript URLs, event-handler attributes και remote image sources.
 
-## Build the XPI locally
+## Δημιουργία του XPI τοπικά
 
-An XPI is just a ZIP archive whose root contains `manifest.json`.
+Ένα αρχείο XPI είναι ουσιαστικά ένα ZIP archive, στη ρίζα του οποίου βρίσκεται το `manifest.json`.
 
 ### Linux / macOS / Git Bash
 
@@ -101,22 +118,34 @@ An XPI is just a ZIP archive whose root contains `manifest.json`.
 ./scripts/build.ps1
 ```
 
-The output is written to `dist/`.
+Το παραγόμενο `.xpi` αποθηκεύεται στον φάκελο:
 
-## Publishing a GitHub Release
+```text
+dist/
+```
 
-This repository includes a GitHub Actions workflow. To publish a release automatically, push a version tag:
+## Δημοσίευση GitHub Release
+
+Το repository περιλαμβάνει GitHub Actions workflow.
+
+Για αυτόματη δημιουργία release, δημιουργήστε και ανεβάστε ένα version tag:
 
 ```bash
 git tag v1.0.0
 git push origin v1.0.0
 ```
 
-GitHub Actions will build the `.xpi`, create the corresponding GitHub Release, and attach the `.xpi` as a downloadable release asset.
+Το GitHub Actions θα:
 
-For future versions, update the version in `manifest.json`, commit the change, and create a matching tag such as `v1.0.1`.
+1. δημιουργήσει το `.xpi`,
+2. δημιουργήσει το αντίστοιχο GitHub Release,
+3. επισυνάψει το `.xpi` ως downloadable release asset.
 
-## Project structure
+Για μελλοντικές εκδόσεις, ενημερώστε πρώτα το version στο `manifest.json`, κάντε commit την αλλαγή και δημιουργήστε αντίστοιχο tag, π.χ.:
+
+`v1.0.1`
+
+## Δομή του project
 
 ```text
 .
@@ -132,9 +161,16 @@ For future versions, update the version in `manifest.json`, commit the change, a
 ├── manifest.json
 ├── CHANGELOG.md
 ├── LICENSE
-└── README.md
+├── README.md
+└── README_EN.md
 ```
 
-## License
+## English version
 
-MIT License. See [LICENSE](LICENSE).
+Η αγγλική έκδοση του README είναι διαθέσιμη εδώ:
+
+[README_EN.md](README_EN.md)
+
+## Άδεια χρήσης
+
+MIT License. Δείτε το αρχείο [LICENSE](LICENSE).
