@@ -1,0 +1,12 @@
+# Local/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary build files
+*.tmp
+*.log
+
+# Keep release artifacts out of normal commits if rebuilding locally.
+# The v1.0.0 XPI is included in this starter ZIP for convenience.
