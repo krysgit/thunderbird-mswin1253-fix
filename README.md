@@ -1,4 +1,4 @@
-# MSWIN1253 Greek Fix for Thunderbird
+# MSWIN1253 Greek Fix for Thunderbird (![GitHub Downloads](https://img.shields.io/github/downloads/krysgit/thunderbird-mswin1253-fix/total))
 
 Μικρή επέκταση για το Thunderbird που διορθώνει την εμφάνιση ελληνικών χαρακτήρων σε emails τα οποία δηλώνουν:
 
