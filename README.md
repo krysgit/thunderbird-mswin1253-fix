@@ -30,6 +30,15 @@ The original email stored locally or on the mail server is **not modified**.
 
 Messages that do not contain `charset=MSWIN1253` are ignored.
 
+## Tested environment
+
+This extension has been tested and confirmed to work on:
+
+- Linux
+- Thunderbird 140.8.0esr (64-bit)
+
+Other operating systems and Thunderbird versions may also work, but have not been verified yet.
+
 ## Download
 
 Go to **Releases** and download the latest `.xpi` asset:
