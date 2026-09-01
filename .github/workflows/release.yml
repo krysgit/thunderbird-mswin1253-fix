@@ -1,0 +1,41 @@
+name: Build and publish XPI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate tag against manifest version
+        shell: bash
+        run: |
+          VERSION=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "manifest.json version ($VERSION) does not match tag ($GITHUB_REF_NAME)."
+            exit 1
+          fi
+
+      - name: Build XPI
+        run: ./scripts/build.sh
+
+      - name: Create GitHub Release and upload XPI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          ASSET="dist/mswin1253-greek-fix-v${VERSION}.xpi"
+          gh release create "$GITHUB_REF_NAME" "$ASSET" \
+            --title "MSWIN1253 Greek Fix $GITHUB_REF_NAME" \
+            --generate-notes
