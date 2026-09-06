@@ -12,6 +12,14 @@
 
 `charset=windows-1253`
 
+## Επίσημη εγκατάσταση από το Thunderbird Add-ons
+
+Η επέκταση είναι πλέον διαθέσιμη στον επίσημο κατάλογο προσθέτων του Thunderbird:
+
+**[MSWIN1253 Greek Fix στο Thunderbird Add-ons](https://addons.thunderbird.net/en-US/thunderbird/addon/mswin1253-greek-fix/)**
+
+Αυτός είναι ο προτεινόμενος τρόπος εγκατάστασης για τους περισσότερους χρήστες.
+
 ## Το πρόβλημα
 
 Ορισμένα παλαιότερα συστήματα αποστολής email χρησιμοποιούν την κωδικοποίηση Windows-1253 για ελληνικό κείμενο, αλλά δηλώνουν στο MIME header:
@@ -48,23 +56,27 @@
 
 Emails που δεν περιέχουν `charset=MSWIN1253` αγνοούνται.
 
-## Λήψη
-
-Κατεβάστε την πιο πρόσφατη έκδοση από τη σελίδα:
-
-**[Latest Release](../../releases/latest)**
-
-Για εγκατάσταση στο Thunderbird χρησιμοποιήστε το αρχείο `.xpi` από τα **Assets** του release.
-
 ## Εγκατάσταση
 
-1. Κατεβάστε το `.xpi` από τη σελίδα **Releases**.
-2. Ανοίξτε το Thunderbird.
-3. Μεταβείτε στο **Add-ons and Themes**.
-4. Στην ενότητα **Extensions**, ανοίξτε το μενού με το γρανάζι ⚙️.
-5. Επιλέξτε **Install Add-on From File...**
-6. Επιλέξτε το αρχείο `.xpi`.
-7. Ανοίξτε ξανά ένα επηρεαζόμενο email.
+### Προτεινόμενος τρόπος
+
+Εγκαταστήστε την επέκταση από το επίσημο Thunderbird Add-ons:
+
+**[MSWIN1253 Greek Fix](https://addons.thunderbird.net/en-US/thunderbird/addon/mswin1253-greek-fix/)**
+
+### Χειροκίνητη εγκατάσταση από GitHub
+
+Εναλλακτικά:
+
+1. Μεταβείτε στη σελίδα **Releases** του repository.
+2. Κατεβάστε το πιο πρόσφατο αρχείο `.xpi`.
+3. Ανοίξτε το Thunderbird.
+4. Μεταβείτε στο **Add-ons and Themes**.
+5. Στην ενότητα **Extensions**, ανοίξτε το μενού με το γρανάζι ⚙️.
+6. Επιλέξτε **Install Add-on From File...**
+7. Επιλέξτε το αρχείο `.xpi`.
+
+**[Latest GitHub Release](../../releases/latest)**
 
 ## Περιβάλλον δοκιμής
 
@@ -122,24 +134,10 @@ Content-Transfer-Encoding: base64
 
 Το παραγόμενο `.xpi` αποθηκεύεται στον φάκελο `dist/`.
 
-## Δημοσίευση GitHub Release
-
-Το repository περιλαμβάνει GitHub Actions workflow. Για αυτόματη δημιουργία release:
-
-```bash
-git tag v1.0.1
-git push origin v1.0.1
-```
-
-Το workflow δημιουργεί το `.xpi`, δημιουργεί το αντίστοιχο GitHub Release και επισυνάπτει το `.xpi` ως downloadable asset.
-
 ## Δομή του project
 
 ```text
 .
-├── .github/
-│   └── workflows/
-│       └── release.yml
 ├── messageDisplay/
 │   └── fix.js
 ├── scripts/

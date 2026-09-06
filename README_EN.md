@@ -12,11 +12,23 @@ instead of the standard:
 
 `charset=windows-1253`
 
+## Official installation from Thunderbird Add-ons
+
+The extension is now available from the official Thunderbird Add-ons catalog:
+
+**[MSWIN1253 Greek Fix on Thunderbird Add-ons](https://addons.thunderbird.net/en-US/thunderbird/addon/mswin1253-greek-fix/)**
+
+This is the recommended installation method for most users.
+
 ## The problem
 
-Some legacy email systems use Windows-1253 bytes for Greek HTML mail but declare the MIME charset as `MSWIN1253`.
+Some legacy email systems use Windows-1253 bytes for Greek HTML mail but declare the MIME charset as:
 
-On affected Thunderbird installations, Greek characters may appear as replacement characters such as `���`.
+`charset=MSWIN1253`
+
+On affected Thunderbird installations, Greek characters may appear as replacement characters such as:
+
+`���`
 
 ## EKDDA use case
 
@@ -40,21 +52,27 @@ The original message stored locally or on the mail server is **not modified**.
 
 Messages that do not contain `charset=MSWIN1253` are ignored.
 
-## Download
-
-Download the latest `.xpi` from:
-
-**[Latest Release](../../releases/latest)**
-
 ## Installation
 
-1. Download the `.xpi` from the Releases page.
-2. Open Thunderbird.
-3. Go to **Add-ons and Themes**.
-4. In **Extensions**, open the gear menu (⚙️).
-5. Select **Install Add-on From File...**
-6. Select the downloaded `.xpi`.
-7. Reopen an affected message.
+### Recommended
+
+Install from the official Thunderbird Add-ons catalog:
+
+**[MSWIN1253 Greek Fix](https://addons.thunderbird.net/en-US/thunderbird/addon/mswin1253-greek-fix/)**
+
+### Manual installation from GitHub
+
+Alternatively:
+
+1. Go to the repository's **Releases** page.
+2. Download the latest `.xpi`.
+3. Open Thunderbird.
+4. Go to **Add-ons and Themes**.
+5. In **Extensions**, open the gear menu (⚙️).
+6. Select **Install Add-on From File...**
+7. Select the downloaded `.xpi`.
+
+**[Latest GitHub Release](../../releases/latest)**
 
 ## Tested environment
 
@@ -66,6 +84,14 @@ Confirmed working on:
 The manifest requires **Thunderbird 128 or newer**.
 
 Other compatible Thunderbird versions and operating systems may also work, but have not yet been verified.
+
+## Example problematic MIME header
+
+```text
+Content-Type: text/html;
+ charset=MSWIN1253
+Content-Transfer-Encoding: base64
+```
 
 ## Supported transfer encodings
 
@@ -104,13 +130,32 @@ See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 
 The generated XPI is written to `dist/`.
 
-## Support
+## Project structure
 
-Use [GitHub Issues](https://github.com/krysgit/thunderbird-mswin1253-fix/issues).
+```text
+.
+├── messageDisplay/
+│   └── fix.js
+├── scripts/
+│   ├── build.ps1
+│   └── build.sh
+├── background.js
+├── manifest.json
+├── CHANGELOG.md
+├── LICENSE
+├── PRIVACY_POLICY.md
+├── README.md
+├── README_EN.md
+└── SUPPORT.md
+```
 
 ## Ελληνική έκδοση
 
 Δείτε το [README.md](README.md).
+
+## Support
+
+For bug reports or compatibility reports, use [GitHub Issues](https://github.com/krysgit/thunderbird-mswin1253-fix/issues).
 
 ## License
 
