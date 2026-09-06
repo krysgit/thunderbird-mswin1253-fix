@@ -1,6 +1,16 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project are documented here.
+
+## 1.0.1 - 2026-09-06
+
+- Prepared the extension for Thunderbird Add-ons submission.
+- Replaced the temporary local add-on ID with a stable add-on ID.
+- Added author and homepage metadata.
+- Added Greek and English README files.
+- Added Privacy Policy and Support documentation.
+- Added GitHub Actions release workflow.
+- Extension runtime behavior is unchanged from the working 1.0.0 version.
 
 ## 1.0.0 - 2026-09-01
 

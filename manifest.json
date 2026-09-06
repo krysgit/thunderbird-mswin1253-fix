@@ -1,11 +1,13 @@
 {
   "manifest_version": 2,
   "name": "MSWIN1253 Greek Fix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fixes Greek HTML messages that incorrectly declare charset=MSWIN1253 by decoding those MIME parts as windows-1253 for display only.",
+  "author": "krysgit",
+  "homepage_url": "https://github.com/krysgit/thunderbird-mswin1253-fix",
   "browser_specific_settings": {
     "gecko": {
-      "id": "mswin1253-greek-fix@local.invalid",
+      "id": "krysgit.mswin1253-greek-fix@addons.thunderbird.net",
       "strict_min_version": "128.0"
     }
   },
@@ -14,6 +16,8 @@
     "messagesModify"
   ],
   "background": {
-    "scripts": ["background.js"]
+    "scripts": [
+      "background.js"
+    ]
   }
 }

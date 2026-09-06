@@ -1,0 +1,15 @@
+GitHub Web Upload Guide
+
+1. Extract this ZIP locally.
+2. Open your repository:
+   https://github.com/krysgit/thunderbird-mswin1253-fix
+3. Use Add file -> Upload files.
+4. Drag the extracted files/folders into the upload area.
+5. Commit the changes.
+
+Important:
+- Do NOT upload any .git folder.
+- .github/workflows/release.yml belongs in the repository.
+- .gitignore belongs in the repository.
+- dist/.gitkeep is only a placeholder; release XPI files should normally be attached to GitHub Releases.
+- The extension version in this package is 1.0.1.

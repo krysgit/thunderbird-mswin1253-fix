@@ -1,87 +1,75 @@
 # MSWIN1253 Greek Fix for Thunderbird
 
-A small Thunderbird extension that fixes Greek text in emails that incorrectly declare the MIME character set as `MSWIN1253` instead of the standard `windows-1253` label.
+![GitHub Downloads](https://img.shields.io/github/downloads/krysgit/thunderbird-mswin1253-fix/total)
+![GitHub Release](https://img.shields.io/github/v/release/krysgit/thunderbird-mswin1253-fix)
+![License](https://img.shields.io/github/license/krysgit/thunderbird-mswin1253-fix)
 
-## The problem
-
-Some legacy mail systems send Greek HTML mail using Windows-1253 bytes but use a header such as:
-
-```text
-Content-Type: text/html;
- charset=MSWIN1253
-Content-Transfer-Encoding: base64
-```
-
-Thunderbird may fail to interpret that non-standard charset label correctly, so Greek text is displayed as replacement characters such as `���`.
-
-Changing the label to `windows-1253` makes the same message render correctly.
-
-## Use case: EKDDA seminar emails
-
-This extension is particularly useful for Greek public-sector employees who receive notification emails from **EKDDA (National Centre for Public Administration and Local Government)** regarding training programs and seminars for which they have registered or have been selected to participate.
-
-Some of these emails have been observed to use:
+A small Thunderbird extension that fixes Greek text in emails whose HTML MIME part declares:
 
 `charset=MSWIN1253`
 
-which may cause Greek text to be displayed incorrectly in Thunderbird.
+instead of the standard:
 
-The extension fixes the display of affected messages without modifying the original email stored on the mail server.
+`charset=windows-1253`
+
+## The problem
+
+Some legacy email systems use Windows-1253 bytes for Greek HTML mail but declare the MIME charset as `MSWIN1253`.
+
+On affected Thunderbird installations, Greek characters may appear as replacement characters such as `���`.
+
+## EKDDA use case
+
+The extension was created after this problem was observed in seminar and training notification emails from **EKDDA — the National Centre for Public Administration and Local Government in Greece**.
+
+It is particularly useful for Greek public-sector employees who receive EKDDA training-programme notifications.
+
+The extension is not limited to EKDDA. It can also help with other messages that use the same `MSWIN1253` charset declaration.
 
 ## What the extension does
 
 When a displayed message contains `charset=MSWIN1253`, the extension:
 
-1. Reads the raw MIME message using Thunderbird's extension APIs.
-2. Finds the affected `text/html` MIME part.
-3. Decodes its bytes as `windows-1253`.
+1. Reads the raw MIME message.
+2. Locates the affected `text/html` MIME part.
+3. Decodes its bytes as Windows-1253.
 4. Sanitizes the resulting HTML.
-5. Replaces only the displayed document with the correctly decoded content.
+5. Replaces only the rendered message view.
 
-The original email stored locally or on the mail server is **not modified**.
+The original message stored locally or on the mail server is **not modified**.
 
 Messages that do not contain `charset=MSWIN1253` are ignored.
 
-## Tested environment
-
-This extension has been tested and confirmed to work on:
-
-- Linux
-- Thunderbird 140.8.0esr (64-bit)
-
-Other operating systems and Thunderbird versions may also work, but have not been verified yet.
-
 ## Download
 
-Go to **Releases** and download the latest `.xpi` asset:
+Download the latest `.xpi` from:
 
-**[Latest release](../../releases/latest)**
-
-The release asset is named like:
-
-```text
-mswin1253-greek-fix-v1.0.0.xpi
-```
+**[Latest Release](../../releases/latest)**
 
 ## Installation
 
 1. Download the `.xpi` from the Releases page.
 2. Open Thunderbird.
-3. Open **Add-ons and Themes**.
-4. In **Extensions**, open the gear menu (⚙).
-5. Select **Install Add-on From File…**.
-6. Choose the downloaded `.xpi` file.
-7. Reopen an affected email.
+3. Go to **Add-ons and Themes**.
+4. In **Extensions**, open the gear menu (⚙️).
+5. Select **Install Add-on From File...**
+6. Select the downloaded `.xpi`.
+7. Reopen an affected message.
 
-## Compatibility
+## Tested environment
+
+Confirmed working on:
+
+- Linux
+- Thunderbird 140.8.0esr (64-bit)
 
 The manifest requires **Thunderbird 128 or newer**.
 
-This project uses Thunderbird's `messages.getRaw`, `messageDisplayScripts`, and `messageDisplay.onMessageDisplayed` APIs.
+Other compatible Thunderbird versions and operating systems may also work, but have not yet been verified.
 
-## Supported message encodings
+## Supported transfer encodings
 
-For an affected `text/html` MIME part declaring `MSWIN1253`, the extension handles:
+For affected `text/html` MIME parts declaring `MSWIN1253`, the extension handles:
 
 - `base64`
 - `quoted-printable`
@@ -89,17 +77,18 @@ For an affected `text/html` MIME part declaring `MSWIN1253`, the extension handl
 
 The original reported case uses `base64`.
 
-## Security / privacy
+## Security and privacy
 
 - No message content is sent anywhere.
-- There are no network requests in the extension.
+- No analytics or telemetry are used.
+- The extension makes no network requests.
 - The original email is not rewritten.
-- The decoded HTML is sanitized before being inserted into the message display.
+- Decoded HTML is sanitized before display.
 - Scripts, forms, iframes, embedded objects, JavaScript URLs, event-handler attributes, and remote image sources are removed.
 
-## Build the XPI locally
+See [PRIVACY_POLICY.md](PRIVACY_POLICY.md).
 
-An XPI is just a ZIP archive whose root contains `manifest.json`.
+## Build locally
 
 ### Linux / macOS / Git Bash
 
@@ -113,39 +102,15 @@ An XPI is just a ZIP archive whose root contains `manifest.json`.
 ./scripts/build.ps1
 ```
 
-The output is written to `dist/`.
+The generated XPI is written to `dist/`.
 
-## Publishing a GitHub Release
+## Support
 
-This repository includes a GitHub Actions workflow. To publish a release automatically, push a version tag:
+Use [GitHub Issues](https://github.com/krysgit/thunderbird-mswin1253-fix/issues).
 
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+## Ελληνική έκδοση
 
-GitHub Actions will build the `.xpi`, create the corresponding GitHub Release, and attach the `.xpi` as a downloadable release asset.
-
-For future versions, update the version in `manifest.json`, commit the change, and create a matching tag such as `v1.0.1`.
-
-## Project structure
-
-```text
-.
-├── .github/
-│   └── workflows/
-│       └── release.yml
-├── messageDisplay/
-│   └── fix.js
-├── scripts/
-│   ├── build.ps1
-│   └── build.sh
-├── background.js
-├── manifest.json
-├── CHANGELOG.md
-├── LICENSE
-└── README.md
-```
+Δείτε το [README.md](README.md).
 
 ## License
 
